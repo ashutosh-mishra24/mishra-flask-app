@@ -90,7 +90,7 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      ExecutionRoleArn: !GetAtt ECSExecutionRole.Arn
+      ExecutionRoleArn: !GetAtt arn:aws:iam::401255130070:role/ECSExecutionRole
       TaskRoleArn: !GetAtt ECSTaskRole.Arn
       ContainerDefinitions:
         - Name: flask-app
