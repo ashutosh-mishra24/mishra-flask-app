@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 401255130070.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t mishra-flask-app .
+  post_build:
+    commands:
+      - echo Tagging the Docker image...
+      - docker tag mishra-flask-app:latest 401255130070.dkr.ecr.us-east-1.amazonaws.com/mishra-flask-app:latest
+      - echo Pushing the Docker image...
+      - docker push 401255130070.dkr.ecr.us-east-1.amazonaws.com/mishra-flask-app:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"flask-app","imageUri":"401255130070.dkr.ecr.us-east-1.amazonaws.com/mishra-flask-app:latest"}]' > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
+
